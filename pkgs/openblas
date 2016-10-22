@@ -1,0 +1,15 @@
+-- Modulefile for OpenBLAS
+local display_name = "OpenBLAS"
+local description = "High Performance Implementation of BLAS/LAPACK"
+local keywords = "linear algebra blas lapack matrix"
+local category = "math"
+local url = "http://www.openblas.net/"
+local help = [[
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help}

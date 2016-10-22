@@ -1,0 +1,18 @@
+-- Modulefile for Anaconda3
+conflict("anaconda2")
+local display_name = "Anaconda Python 3"
+local description = "Anaconda distribution of Python 3"
+local keywords = "anaconda conda python python3"
+local category = "scripting"
+local url = "https://www.continuum.io/"
+local help = [[
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     mode         = "prepend",
+                     ignore_dev   = true}

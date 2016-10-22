@@ -1,0 +1,16 @@
+-- Modulefile for Git
+local display_name = "Git"
+local description = "Git - Distributed Version Control System"
+local keywords = "git version-control"
+local category = "version-control"
+local url = "https://git-scm.com/"
+local help = [[
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     mode         = "prepend"}

@@ -1,0 +1,15 @@
+-- Modulefile for R
+local display_name = "R"
+local description = "Open source statistical computing."
+local keywords = "R statistics"
+local category = "scripting"
+local url = "https://www.r-project.org/"
+local help = [[
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help}

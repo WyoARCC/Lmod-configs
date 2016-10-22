@@ -1,0 +1,15 @@
+-- Modulefile for OpenMPI
+local display_name = "OpenMPI"
+local description = "High performance implementation of MPI/OpenSHMEM"
+local keywords = "mpi message passing distributed"
+local category = "mpi"
+local url = "https://www.open-mpi.org/"
+local help = [[
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help}
