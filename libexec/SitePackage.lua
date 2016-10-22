@@ -98,7 +98,6 @@ function query_bin_dir(pkg)
         end
     end
 end
-        
 
 function query_lib_dir(pkg)
     if isempty(pkg.libdir) then
@@ -161,6 +160,7 @@ end
 -- Meta function to query directories
 function query_pkg_dirs(pkg)
     query_pkg_dir(pkg)
+    query_bin_dir(pkg)
     query_lib_dir(pkg)
     query_inc_dir(pkg)
     query_pkgconfig_dir(pkg)
@@ -287,7 +287,7 @@ function pkg_init(arg)
     end
 
     pkg.prefix       = pathJoin(software_prefix,pkg.name,pkg.version)
-    pkg.bindir       = pathJoin(pkg.prefix,"bin")
+    pkg.bindir       = arg.bindir or "" 
     pkg.incdir       = arg.incdir or ""
     pkg.libdir       = arg.libdir or ""
     pkg.pkgconfig    = arg.pkgconfig or ""
