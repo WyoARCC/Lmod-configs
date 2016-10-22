@@ -15,4 +15,5 @@ local pkg = pkg_init{display_name = display_name,
                      url          = url,
                      help         = help,
                      mode         = "prepend",
-                     ignore_dev   = true}
+                     ignore_dev   = true,
+                     family       = "python"}

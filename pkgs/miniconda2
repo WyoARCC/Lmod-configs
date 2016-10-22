@@ -1,5 +1,4 @@
 -- Modulefile for Anaconda2
-conflict("anaconda2","anaconda3","python")
 local display_name = "Mini Anaconda Python 2"
 local description = "Mini Anaconda distribution of Python 2"
 local keywords = "miniconda anaconda conda python python2"
@@ -15,4 +14,6 @@ local pkg = pkg_init{display_name = display_name,
                      url          = url,
                      help         = help,
                      mode         = "prepend",
-                     ignore_dev   = true}
+                     family       = "python",
+                     ignore_dev   = true
+                    }

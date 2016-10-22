@@ -6,9 +6,9 @@
 #
 ########################################################################
 
-set MY_NAME="/opt/sw/lmod/lmod/init/cshrc"
-
-
+setenv SW_PREFIX "/opt/sw"
+setenv LMOD_PREFIX "$SW_PREFIX/lmod"
+set MY_NAME="$LMOD_PREFIX/lmod/init/cshrc"
 
 if ( ! $?MODULEPATH_ROOT ) then
     if ( $?USER) then
@@ -22,16 +22,16 @@ if ( ! $?MODULEPATH_ROOT ) then
     if ( "x$UNAME" == xAIX ) then
         setenv LMOD_arch   rs6k
     endif
-
+    #setenv LMOD_PREFIX "/opt/sw/lmod"
     setenv TARG_TITLE_BAR_PAREN " "
     setenv LMOD_FULL_SETTARG_SUPPORT no
     setenv LMOD_SETTARG_CMD     :
     setenv LMOD_COLORIZE        yes
     setenv LMOD_PREPEND_BLOCK   normal
     setenv MODULEPATH_ROOT      "/opt/sw/modulefiles"
-    setenv MODULEPATH           `/opt/sw/lmod/lmod/libexec/addto --append MODULEPATH $MODULEPATH_ROOT/$LMOD_sys $MODULEPATH_ROOT/Core`
-    setenv MODULEPATH           `/opt/sw/lmod/lmod/libexec/addto --append MODULEPATH /opt/sw/lmod/lmod/modulefiles/Core`
-    setenv MODULESHOME          "/opt/sw/lmod/lmod"
+    setenv MODULEPATH           `$LMOD_PREFIX/lmod/libexec/addto --append MODULEPATH $MODULEPATH_ROOT/$LMOD_sys $MODULEPATH_ROOT/Core`
+    setenv MODULEPATH           `$LMOD_PREFIX/lmod/libexec/addto --append MODULEPATH /opt/sw/lmod/lmod/modulefiles/Core`
+    setenv MODULESHOME          "$LMOD_PREFIX/lmod"
     setenv BASH_ENV             "$MODULESHOME/init/bash"
 
     setenv LMOD_AVAIL_STYLE     "grouped"
@@ -42,12 +42,12 @@ if ( ! $?MODULEPATH_ROOT ) then
     if ( ! $?MANPATH ) then
       setenv MANPATH :
     endif
-    setenv MANPATH `/opt/sw/lmod/lmod/libexec/addto MANPATH /opt/sw/lmod/lmod/share/man`
+    setenv MANPATH `$LMOD_PREFIX/lmod/libexec/addto MANPATH /opt/sw/lmod/lmod/share/man`
 
 endif
 
-if ( -f  /opt/sw/lmod/lmod/init/csh  ) then
-  source /opt/sw/lmod/lmod/init/csh
+if ( -f  $LMOD_PREFIX/lmod/init/csh  ) then
+  source $LMOD_PREFIX/lmod/init/csh
 endif
 
 # Local Variables:

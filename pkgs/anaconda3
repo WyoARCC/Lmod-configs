@@ -1,5 +1,4 @@
 -- Modulefile for Anaconda3
-conflict("anaconda2")
 local display_name = "Anaconda Python 3"
 local description = "Anaconda distribution of Python 3"
 local keywords = "anaconda conda python python3"
@@ -15,4 +14,6 @@ local pkg = pkg_init{display_name = display_name,
                      url          = url,
                      help         = help,
                      mode         = "prepend",
-                     ignore_dev   = true}
+                     family       = "python",
+                     ignore_dev   = true
+                    }

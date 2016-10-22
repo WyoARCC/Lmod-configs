@@ -6,7 +6,11 @@
 #
 ########################################################################
 
-if [ -z "${USER_IS_ROOT:-}" ]; then
+# Where is all the software
+export SW_PREFIX="/opt/sw"
+export LMOD_PREFIX="$SW_PREFIX/lmod"
+
+if [ 0 != $EUID ]; then
 
   if [ -z "${MODULEPATH_ROOT:-}" ]; then
     export USER=${USER-${LOGNAME}}  # make sure $USER is set
@@ -17,15 +21,14 @@ if [ -z "${USER_IS_ROOT:-}" ]; then
       LMOD_arch=rs6k
     fi
     export LMOD_arch
-
-    export MODULEPATH_ROOT="/opt/sw/modulefiles"
+    export MODULEPATH_ROOT="${LMOD_PREFIX}/modulefiles"
     export LMOD_SETTARG_CMD=":"
     export LMOD_FULL_SETTARG_SUPPORT=no
     export LMOD_COLORIZE=yes
     export LMOD_PREPEND_BLOCK=normal
-    export MODULEPATH=$(/opt/sw/lmod/lmod/libexec/addto --append MODULEPATH $MODULEPATH_ROOT/$LMOD_sys $MODULEPATH_ROOT/Core)
-    export MODULEPATH=$(/opt/sw/lmod/lmod/libexec/addto --append MODULEPATH /opt/sw/lmod/lmod/modulefiles/Core)
-    export MODULESHOME=/opt/sw/lmod/lmod
+    export MODULEPATH=$($LMOD_PREFIX/lmod/libexec/addto --append MODULEPATH $MODULEPATH_ROOT/$LMOD_sys $MODULEPATH_ROOT/Core)
+    export MODULEPATH=$($LMOD_PREFIX/lmod/libexec/addto --append MODULEPATH /opt/sw/lmod/lmod/modulefiles/Core)
+    export MODULESHOME=${LMOD_PREFIX}/lmod
 
     export BASH_ENV=$MODULESHOME/init/bash
 
@@ -35,7 +38,7 @@ if [ -z "${USER_IS_ROOT:-}" ]; then
     if [ -z "${MANPATH:-}" ]; then
       export MANPATH=:
     fi
-    export MANPATH=$(/opt/sw/lmod/lmod/libexec/addto MANPATH /opt/sw/lmod/lmod/share/man)
+    export MANPATH=$($LMOD_PREFIX/lmod/libexec/addto MANPATH /opt/sw/lmod/lmod/share/man)
   fi
 
   PS_CMD=/usr/bin/ps

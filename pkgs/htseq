@@ -1,0 +1,18 @@
+-- Modulefile for HTSeq
+prereq("anaconda2")
+local display_name = "HTSeq"
+local description = "High Throughput Sequencing (Python)"
+local keywords = "htseq bio rna dna"
+local category = "bioinformatics"
+local url = "http://www-huber.embl.de/HTSeq/doc/overview.html"
+local help = [[
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     mode         = "append",
+                    }
