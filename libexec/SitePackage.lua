@@ -16,6 +16,8 @@ local dbg = Dbg:dbg()
 local hook = require("Hook")
 PkgBase = require("PkgBase")
 
+local verbose = os.getenv("LMOD_VERBOSE")
+
 -- Add more global config here
 default_sw_prefix = "/opt/sw"
 software_prefix = os.getenv("SW_PREFIX") or default_sw_prefix
@@ -319,11 +321,11 @@ function comp_vars(pkg)
        local val = v:gsub("{bindir}",pkg.bindir)
 
        -- Provide messages if needed, can remove later
-       if "load" == mode() then
-           LmodMessage(
-             string.format("setting %5s to \"%s\"",k,val)
-           )
-       else
+       if "load" == mode() and verbose then
+               LmodMessage(
+                 string.format("setting %5s to \"%s\"",k,val)
+               )
+       elseif verbose then
           LmodMessage(
             string.format("Putting %5s to previous value.",k)
           )
@@ -416,7 +418,10 @@ function pkg_init(arg)
     if isempty(pkg.prefix) then
         pkg.prefix = pathJoin(software_prefix,pkg.name,pkg.version)
     end
-    LmodMessage(pkg.mf)
+
+    if verbose then
+        LmodMessage(pkg.mf)
+    end
 
     if groupT[pkg.name] then
 	    append_modulepath(pkg.name)
