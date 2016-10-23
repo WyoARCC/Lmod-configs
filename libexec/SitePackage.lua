@@ -17,6 +17,7 @@ software_prefix = os.getenv("SW_PREFIX") or "/opt/sw"
 help_email = "arcc-help@uwyo.edu"
 
 -- Fancy names on group headers
+-- Fix this
 local mapT = {
     grouped = {
         ["/opt/sw/lmod/lmod/modulefiles/Core"]    = "Core Modules",
@@ -33,8 +34,10 @@ local pyT = {
     ["3.5"] = "python3.5",
 }
 
+-- Updated to reflext the configuration settings
+-- above in the variable 'software_prefix'
 function site_prefix()
-    return "/opt/sw"
+    return software_prefix
 end
 
 --
@@ -65,10 +68,12 @@ function avail_hook(t)
     end
 end
 
+-- Simple helper function
 function isempty(s)
     return s == nil or s == ''
 end
 
+-- Information Setting
 function pkg_info(pkg)
     help(pkg.help)
     whatis("Name        : " .. pkg.display_name)
@@ -82,6 +87,7 @@ function pkg_info(pkg)
     whatis("Library Dir : " .. pkg.libdir)
 end
 
+-- Verify that the software prefix exist
 function query_pkg_dir(pkg)
     if not isDir(pkg.prefix) then
         LmodError("\n"..pkg.name.."/"..pkg.version.." does not exist."
@@ -90,6 +96,9 @@ function query_pkg_dir(pkg)
     end
 end
 
+-- See if we should modify the PATH variable
+-- Working on the common UNIX FHS of exes being
+-- placed in the subdirectory "bin".
 function query_bin_dir(pkg)
     if isempty(pkg.bindir) then
         local bindir = pathJoin(pkg.prefix,"bin")
@@ -99,6 +108,9 @@ function query_bin_dir(pkg)
     end
 end
 
+-- See if we should modify the LD_LIBRARY_PATH
+-- variable and set developer flags for libraries
+-- by checking "lib" and "lib64" subdirectories.
 function query_lib_dir(pkg)
     if isempty(pkg.libdir) then
         local libdir = ""
@@ -112,6 +124,8 @@ function query_lib_dir(pkg)
     end
 end
 
+-- Check if there is an "include" directory to
+-- set for the developer flags CPPFLAGS.
 function query_inc_dir(pkg)
     if isempty(pkg.incdir) then
         local incdir = pathJoin(pkg.prefix,"include")
@@ -121,6 +135,7 @@ function query_inc_dir(pkg)
     end
 end
 
+-- See if we should modify PKG_CONFIG_PATH.
 function query_pkgconfig_dir(pkg)
     local pkgconfig = pathJoin(pkg.libdir,"pkgconfig")
     if isDir(pkgconfig) then
@@ -128,6 +143,7 @@ function query_pkgconfig_dir(pkg)
     end
 end
 
+-- See if we should modify CMAKE_PREFIX_PATH.
 function query_cmake_dir(pkg)
     local cmake = pathJoin(pkg.libdir,"cmake")
     if isDir(cmake) then
@@ -135,6 +151,7 @@ function query_cmake_dir(pkg)
     end
 end
 
+-- See if we should modify PYTHONPATH appropriately
 function query_python_dir(pkg)
     if "python" ~= pkg.family and isempty(pkg.python) then
         local pydir = ""
@@ -147,7 +164,8 @@ function query_python_dir(pkg)
         end
     end
 end
-    
+
+-- See if we should modify PERL5LIB appropriately
 function query_perl5_dir(pkg)
     if "perl" ~= pkg.family and isempty(pkg.perl5) then
         local perl5 = pathJoin(pkg.libdir,"perl5")
@@ -169,9 +187,7 @@ function query_pkg_dirs(pkg)
     query_perl5_dir(pkg)
 end
 
---
 -- Module available functions
---
 function prepend_modulepath(subdir)
     local mroot = os.getenv("MODULEPATH_ROOT")
     local mdir  = pathJoin(mroot,subdir)
@@ -184,6 +200,9 @@ function append_modulepath(subdir)
     append_path("MODULEPATH",mdir)
 end
 
+-- Prepend Stuff
+-- Should pkgconfig and cmake variable ever be
+-- prepended or only appended?
 function prepend_vars(pkg)
     if not isempty(pkg.bindir) and isDir(pkg.bindir) then
         prepend_path("PATH",pkg.bindir)
@@ -214,6 +233,7 @@ function prepend_vars(pkg)
     prepend_path("MANPATH",pathJoin(pkg.prefix,"share","man"))
 end
 
+-- Append environment variables appropriately
 function append_vars(pkg)
     if not isempty(pkg.bindir) and isDir(pkg.bindir) then
         append_path("PATH",pkg.bindir)
@@ -246,7 +266,6 @@ end
 
 -- Does dev vars need prepend mode? Doubtful
 function dev_vars(pkg)
-
     setenv(string.upper(pkg.name).."_ROOT",pkg.prefix)
     setenv(string.upper(pkg.name).."_DIR",pkg.prefix)
     setenv(string.upper(pkg.name).."_VERSION",pkg.version)
@@ -263,9 +282,51 @@ function dev_vars(pkg)
         append_path("LDFLAGS",lib," ")
         setenv(string.upper(pkg.name).."_LIB",lib)
     end
-    
 end
 
+-- Process Compiler Table
+function comp_vars(pkg)
+   for k,v in pairs(arg.compilers) do
+       -- set absolute path if requested
+       local val = v:gsub("{bindir}",pkg.bindir)
+
+       -- Provide messages if needed, can remove later
+       if "load" == mode() then
+           LmodMessage(
+             string.format("setting %5s to \"%s\"",k,val)
+           )
+       else
+          LmodMessage(
+            string.format("Putting %5s to previous value.",k)
+          )
+       end
+       
+       -- Push the values to the given defined keys
+       pushenv(k,val)
+   end
+end
+
+-- Process any extras provided
+function extra_vars(pkg)
+    for k,v in pairs(arg.extras) do
+        -- figure out a way to provide substitutions like below.
+        local val = v:gsub("{bindir}",pkg.bindir)
+        if "load" == mode() then
+            LmodMessage(
+              string.format("setting %5s to \"%s\"",k,val)
+            )
+        else
+           LmodMessage(
+             string.format("Putting %5s to previous value.",k)
+           )
+        end
+        pushenv(k,val)
+    end
+end
+
+-- This is the main routine that should called in a modulefile
+-- which can initialize the environment provided that the
+-- installation provides standard UNIX FHS
 function pkg_init(arg)
     local vmode = arg.mode
 
@@ -273,6 +334,7 @@ function pkg_init(arg)
     local status
     local msg
     
+    -- Package Metadata
     pkg.name         = myModuleName()
     pkg.version      = myModuleVersion()
     pkg.family       = arg.family or ""
@@ -292,7 +354,8 @@ function pkg_init(arg)
         pkg.ignore_lib = true
     end
 
-    pkg.prefix       = pathJoin(software_prefix,pkg.name,pkg.version)
+    -- Package data
+    pkg.prefix       = arg.prefix or ""
     pkg.bindir       = arg.bindir or "" 
     pkg.incdir       = arg.incdir or ""
     pkg.libdir       = arg.libdir or ""
@@ -300,45 +363,52 @@ function pkg_init(arg)
     pkg.cmake        = arg.cmake or ""
     pkg.python       = arg.python or ""
     pkg.perl5        = arg.perl5 or ""
+    pkg.compilers    = arg.compilers or nil
+    pkg.extras       = arg.extras or nil
 
-    -- Can the ^query lines below be combined well?
+    -- How can we best try to determine the installation prefix
+    -- based on the module location? Then we can either be
+    -- provided with the prefix in the modulefile or determine
+    -- its position in the heirarchy.
+    -- TMP fix
+    if isempty(pkg.prefix) then
+        pkg.prefix = pathJoin(software_prefix,pkg.name,pkg.version)
+    end
+
+    -- Start looking for common directories
     query_pkg_dirs(pkg)
 
-
     -- Start Setting Environment
+    -- Set the module family to enable autoswapping
     if not isempty(pkg.family) then
         family(pkg.family)
     end
 
-    dev_vars(pkg)
-
-    if vmode == nil or string.lower(vmode) == "append" then
-        append_vars(pkg)
-    elseif string.lower(vmode) == "prepend" then
+    -- Set the common environment variables.
+    if string.lower(vmode) == "prepend" then
         prepend_vars(pkg)
+    else
+        append_vars(pkg)
     end
 
-    -- Package Extras
-    if arg.extras then
-        for k,v in pairs(arg.extras) do
+    -- if vmode == nil or string.lower(vmode) == "append" then
+    --     append_vars(pkg)
+    -- elseif string.lower(vmode) == "prepend" then
+    --     prepend_vars(pkg)
+    -- end
 
-            local val = v
-            val = v:gsub("{bindir}",pkg.bindir)
-
-            if "load" == mode() then
-                LmodMessage(
-                  string.format("setting %5s to \"%s\"",k,val)
-                )
-            else
-               LmodMessage(
-                 string.format("Putting %5s to previous value.",k)
-               )
-            end
-            
-            pushenv(k,val)
-        end
+    -- Set the development variables
+    dev_vars(pkg)
+    if pkg.compilers then
+        comp_vars(pkg)
     end
 
+    -- Process any extras provided
+    if pkg.extras then
+        extra_vars(pkg)
+    end
+  
+    -- Set the package information 
     pkg_info(pkg)
 
     return pkg
