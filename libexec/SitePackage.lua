@@ -297,7 +297,7 @@ end
 
 -- Process Compiler Table
 function comp_vars(pkg)
-   for k,v in pairs(arg.compilers) do
+   for k,v in pairs(pkg.compilers) do
        -- set absolute path if requested
        local val = v:gsub("{bindir}",pkg.bindir)
 
@@ -339,7 +339,7 @@ end
 -- which can initialize the environment provided that the
 -- installation provides standard UNIX FHS
 function pkg_init(arg)
-    local vmode = arg.mode
+    local vmode = arg.mode or "append"
 
     local pkg = {}
     local status
