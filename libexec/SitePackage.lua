@@ -1,6 +1,10 @@
---------------------------------------------------------------------------
--- This is a placeholder for site specific functions.
--- @module SitePackage
+--
+-- Lmod SitePackage.lua
+-- Advanced Research Computing Center
+-- University of Wyoming
+-- Jared D. Baker <jared.baker@uwyo.edu
+--
+--
 
 require("strict")
 require("serializeTbl")
@@ -13,7 +17,22 @@ local hook = require("Hook")
 PkgBase = require("PkgBase")
 
 -- Add more global config here
-software_prefix = os.getenv("SW_PREFIX") or "/opt/sw"
+default_sw_prefix = "/opt/sw"
+software_prefix = os.getenv("SW_PREFIX") or default_sw_prefix
+if not isDir(software_prefix) then
+    if not isDir(default_sw_prefix) then
+        LmodError("Software PREFIX is not set or not in default location")
+    else
+        LmodMessage(
+            [[ >>  WARNING: setting software prefix to default as configured
+                            one doesn't exist.]]
+        )
+    end
+end
+
+-- MODULEPATH_ROOT (Lmod will through an error if not set)
+local mroot = os.getenv("MODULEPATH_ROOT") 
+
 help_email = "arcc-help@uwyo.edu"
 
 -- Fancy names on group headers
@@ -200,13 +219,11 @@ end
 
 -- Module available functions
 function prepend_modulepath(subdir)
-    local mroot = os.getenv("MODULEPATH_ROOT")
     local mdir  = pathJoin(mroot,subdir)
     prepend_path("MODULEPATH",mdir)
 end
 
 function append_modulepath(subdir)
-    local mroot = os.getenv("MODULEPATH_ROOT")
     local mdir  = pathJoin(mroot,subdir)
     append_path("MODULEPATH",mdir)
 end
@@ -335,6 +352,20 @@ function extra_vars(pkg)
     end
 end
 
+-- Not sure if the next two functions are helpful, but maybe.
+-- Need to get a table with a table as values to extend the key
+-- as the environment variable
+-- Arbitrary Appends
+function appends
+
+
+end
+
+-- Arbitrary Prepends
+function prepends
+
+end
+
 -- This is the main routine that should called in a modulefile
 -- which can initialize the environment provided that the
 -- installation provides standard UNIX FHS
@@ -406,12 +437,6 @@ function pkg_init(arg)
     else
         append_vars(pkg)
     end
-
-    -- if vmode == nil or string.lower(vmode) == "append" then
-    --     append_vars(pkg)
-    -- elseif string.lower(vmode) == "prepend" then
-    --     prepend_vars(pkg)
-    -- end
 
     -- Set the development variables
     dev_vars(pkg)
