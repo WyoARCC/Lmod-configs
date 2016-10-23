@@ -7,9 +7,21 @@ local url = "https://www.open-mpi.org/"
 local help = [[
              ]]
 
+-- A table of compiler variables to set ...
+-- Pass as 'extras' to pkg_init.
+local compT = {
+               ['CC']  = "{bindir}/mpicc",
+               ['CXX'] = "{bindir}/mpicxx",
+               ['FC']  = "{bindir}/mpifort",
+               ['F90'] = "{bindir}/mpif90",
+               ['F77'] = "{bindir}/mpif77",
+              }
+
 local pkg = pkg_init{display_name = display_name,
                      description  = description,
                      keywords     = keywords,
                      category     = category,
                      url          = url,
-                     help         = help}
+                     help         = help,
+                     extras       = compT,
+                    }

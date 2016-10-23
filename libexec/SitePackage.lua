@@ -198,7 +198,10 @@ function prepend_vars(pkg)
         
         if not isempty(pkg.cmake) then
             prepend_path("CMAKE_MODULE_PATH",pkg.cmake)
+            --prepend_path("CMAKE_PREFIX_PATH",pkg.prefix)
         end
+        -- Outside conditional
+        prepend_path("CMAKE_PREFIX_PATH",pkg.prefix)
 
         if not isempty(pkg.python) and "python" ~= pkg.family then
             prepend_path("PYTHONPATH",pkg.python)
@@ -225,7 +228,10 @@ function append_vars(pkg)
 
         if not isempty(pkg.cmake) then
             append_path("CMAKE_MODULE_PATH",pkg.cmake)
+            --append_path("CMAKE_PREFIX_PATH",pkg.prefix)
         end
+        -- Outside conditional
+        append_path("CMAKE_PREFIX_PATH",pkg.prefix)
 
         if not isempty(pkg.python) then
             append_path("PYTHONPATH",pkg.python)
@@ -261,7 +267,7 @@ function dev_vars(pkg)
 end
 
 function pkg_init(arg)
-    local mode = arg.mode
+    local vmode = arg.mode
 
     local pkg = {}
     local status
@@ -306,10 +312,31 @@ function pkg_init(arg)
 
     dev_vars(pkg)
 
-    if mode == nil or string.lower(mode) == "append" then
+    if vmode == nil or string.lower(vmode) == "append" then
         append_vars(pkg)
-    elseif string.lower(mode) == "prepend" then
+    elseif string.lower(vmode) == "prepend" then
         prepend_vars(pkg)
+    end
+
+    -- Package Extras
+    if arg.extras then
+        for k,v in pairs(arg.extras) do
+
+            local val = v
+            val = v:gsub("{bindir}",pkg.bindir)
+
+            if "load" == mode() then
+                LmodMessage(
+                  string.format("setting %5s to \"%s\"",k,val)
+                )
+            else
+               LmodMessage(
+                 string.format("Putting %5s to previous value.",k)
+               )
+            end
+            
+            pushenv(k,val)
+        end
     end
 
     pkg_info(pkg)
