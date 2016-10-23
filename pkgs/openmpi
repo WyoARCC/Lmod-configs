@@ -23,5 +23,5 @@ local pkg = pkg_init{display_name = display_name,
                      category     = category,
                      url          = url,
                      help         = help,
-                     extras       = compT,
+                     compilers    = compT,
                     }
