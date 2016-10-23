@@ -1,0 +1,16 @@
+-- Modulefile for CMake
+local display_name = "CMake"
+local description = "CMake - Cross Platform Make"
+local keywords = "cmake configuration development"
+local category = "development"
+local url = "https://cmake.org/"
+local help = [[
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     mode         = "prepend"}

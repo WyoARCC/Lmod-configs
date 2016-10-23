@@ -25,6 +25,17 @@ local mapT = {
     },
 }
 
+local groupT = {
+	["Core"]      = pathJoin(software_prefix,"opt"),
+	["gnu"]       = pathJoin(software_prefix,"gnu"),
+	["intel"]     = pathJoin(software_prefix,"intel"),
+	["pgi"]       = pathJoin(software_prefix,"pgi"),
+	["llvm"]      = pathJoin(software_prefix,"llvm"),
+	["xl"]        = pathJoin(software_prefix,"xl"),
+	["cray"]      = pathJoin(software_prefix,"cray"),
+	["pathscale"] = pathJoin(software_prefix,"pathscale"),
+}
+
 local libT = {"lib","lib64"}
 
 local pyT = {
@@ -373,6 +384,11 @@ function pkg_init(arg)
     -- TMP fix
     if isempty(pkg.prefix) then
         pkg.prefix = pathJoin(software_prefix,pkg.name,pkg.version)
+    end
+    LmodMessage(pkg.mf)
+
+    if groupT[pkg.name] then
+	    append_modulepath(pkg.name)
     end
 
     -- Start looking for common directories

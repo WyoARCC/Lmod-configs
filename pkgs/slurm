@@ -1,0 +1,19 @@
+-- Modulefile for Slurm workload manager
+local display_name = "Slurm Workload Manager"
+local description = "A workloaded manager for HPC/HTC"
+local keywords = "slurm wlm srun sbatch salloc"
+local category = "wlm"
+local url = "https://www.schedmd.com/"
+local help = [[
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     mode         = "prepend",
+                     family       = "wlm",
+                     prefix       = "/apps/opt/slurm/16.05",
+                    }
