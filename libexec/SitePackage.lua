@@ -356,13 +356,13 @@ end
 -- Need to get a table with a table as values to extend the key
 -- as the environment variable
 -- Arbitrary Appends
-function appends
+function appends()
 
 
 end
 
 -- Arbitrary Prepends
-function prepends
+function prepends()
 
 end
 
