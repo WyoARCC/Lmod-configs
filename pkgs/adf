@@ -1,0 +1,34 @@
+-- Modulefile for ADF 
+local display_name = "ADF Chemistry Package"
+local description = ""
+local keywords = "adf chemistry quantum material science"
+local category = ""
+local url = "https://www.scm.com/adf-modeling-suite/"
+local help = [[
+
+ADF is a power DFT used in many areas of chemistry and materials science
+and is particularly strong in molecular porperties and inorganic chemistry.
+
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     mode         = "prepend",
+                     family       = "",
+                     prefix       = "",
+                    }
+
+add_property("scitype","chem")
+pushenv("ADFHOME",pkg.base)
+pushenv("SCMLICENSE",pathJoin(pkg.base,"license.txt"))
+pushenv("SCM_TMPDIR","/tmp")
+pushenv("ADFBIN",pathJoin(pkg.base,"bin"))
+pushenv("ADFRESOURCES",pathJoin(pkg.base,"atomicdata"))
+
+-- Intel MPI extra, set via each site.
+pushenv("I_MPI_PMI_LIBRARY","")
+

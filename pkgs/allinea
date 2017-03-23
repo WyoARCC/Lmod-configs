@@ -1,0 +1,37 @@
+-- Modulefile for Allinea Debugger
+
+local display_name = "Allinea HPC Development Tools"
+local description = "A healthy debugging and profiling software collection targetted at HPC"
+local keywords = "debug debugger profile profiler ddt map performance reports"
+local category = ""
+local url = "https://www.allinea.com/"
+local help = [[
+
+This module sets the environment up to use Allinea environment.
+The Allinea tools include Allinea DDT, a parallel debugger, and
+Allinea MAP, a parallel profiler. There are also the performance
+report tools which can help classify your compute workload by CPU,
+IO, and MPI. The binaries are as follows:
+
+    ddt			debugger
+    map			profiler
+    perf-report		performance reports
+
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     mode         = "prepend",
+                     family       = "",
+                     prefix       = "",
+                    }
+
+--whatis("Allinea Forge Debugger (DDT), Profiler (MAP) and Performance Reports (perf-report)")
+add_property("pkgtype","dev")
+
+prepend_path("PATH","/apps/user/opt/allinea-6.0.4/forge/bin")
+prepend_path("PATH","/apps/user/opt/allinea-6.0.4/reports/bin")

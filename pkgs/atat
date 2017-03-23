@@ -1,0 +1,23 @@
+-- Modulefile for ATAT 
+local display_name = "ATAT"
+local description = "ATAT Genomic Software"
+local keywords = "alloy materials science"
+local category = ""
+local url = "https://www.brown.edu/Departments/Engineering/Labs/avdw/atat/"
+local help = [[
+
+
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     mode         = "prepend",
+                     family       = "wlm",
+                     prefix       = "",
+                    }
+
+pushenv("ATAT_ROOT",pkg.base,"/apps/user/intel-16/atat-3.23")

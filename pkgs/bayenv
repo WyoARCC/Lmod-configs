@@ -1,11 +1,14 @@
--- Modulefile for BAMTOOLS
-local display_name = "BAMTOOLS"
+-- Modulefile for 
+local display_name = "BayEnv"
 local description = ""
 local keywords = ""
 local category = ""
-local url = "https://github.com/pezmaster31/bamtools"
+local url = "http://www.eve.ucdavis.edu/gmcoop/Software/Bayenv/Bayenv.html"
 local help = [[
+
+
              ]]
+
 
 local pkg = pkg_init{display_name = display_name,
                      description  = description,
@@ -15,3 +18,5 @@ local pkg = pkg_init{display_name = display_name,
                      help         = help,
                      compilers    = compT,
                     }
+
+-- Specials Below Here --

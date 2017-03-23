@@ -1,0 +1,25 @@
+-- Modulefile for 
+local display_name = "BCFtools"
+local description = ""
+local keywords = ""
+local category = ""
+local url = "https://samtools.github.io/bcftools/bcftools.html"
+local help = [[
+
+BCFtools is a set of utilities that manipulate variant calls in the Variant 
+Call Format (VCF) and its binary counterpart BCF. All commands work 
+transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.
+
+             ]]
+
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     compilers    = compT,
+                    }
+
+-- Specials Below Here --

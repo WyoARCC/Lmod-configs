@@ -1,0 +1,19 @@
+-- Modulefile for Augustus
+local display_name = "Augustus Genomics Software"
+local description = ""
+local keywords = ""
+local category = "genomics sequence "
+local url = "http://bioinf.uni-greifswald.de/augustus/"
+local help = [[
+
+
+             ]]
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     compilers    = compT,
+                    }

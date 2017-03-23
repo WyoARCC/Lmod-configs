@@ -1,0 +1,23 @@
+-- Modulefile for bayescan
+local display_name = ""
+local description = ""
+local keywords = ""
+local category = ""
+local url = "http://cmpg.unibe.ch/software/BayeScan/"
+local help = [[
+
+
+             ]]
+
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     compilers    = compT,
+                    }
+
+-- Specials Below Here --
+append_path("R_LIBS",pathJoin(pkg.base,"r_libs"))
