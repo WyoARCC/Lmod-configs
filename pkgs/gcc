@@ -1,0 +1,27 @@
+-- Modulefile for GNU Compiler Collection
+local display_name = "GNU Compiler Collection"
+local description = "GPL Open Source Compilers for C,C++,Go,Fortran"
+local keywords = "compile compiler C C++ Fortran"
+local category = "compiler"
+local url = "https://www.gcc.org/"
+local help = [[
+             ]]
+
+-- A table of compiler variables to set ...
+-- Pass as 'extras' to pkg_init.
+local compT = {
+               ['CC']  = "{bindir}/gcc",
+               ['CXX'] = "{bindir}/g++",
+               ['FC']  = "{bindir}/gfortran",
+               ['F90'] = "{bindir}/gfortran",
+               ['F77'] = "{bindir}/gfortran",
+              }
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     compilers    = compT,
+                    }

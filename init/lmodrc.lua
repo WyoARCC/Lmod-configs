@@ -31,4 +31,29 @@ propT = {
         active        = { short = "(L)",  long = "(L)",     color = "yellow", doc = "Module is loaded", },
      },
    },
+
+   pkgtype = {
+	validT = { dev = 1, script = 1, mpi = 1, viz = 1, io = 1, },
+	displayT = {
+           ["dev"]     = { short = "(dev)", long = "(dev)",  color = "blue",    doc = "Development Application / Library", },
+           ["script"]  = { short = "(sc)",  long = "(sc)",   color = "yellow",  doc = "Scripting Language", },
+           ["mpi"]     = { short = "(M)",   long = "(mpi)",  color = "cyan",    doc = "MPI Implementation", },
+           ["viz"]     = { short = "(V)",   long = "(viz)",  color = "magenta", doc = "Visualization Package", },
+           ["io"]      = { short = "(io)",  long = "(io)",   color = "blue",    doc = "Input/Output Library", },
+       },
+   },
+
+   scitype = {
+       validT = { math = 1, atm = 1, gen = 1, bio = 1, eng = 1, chem = 1, phys = 1, geo = 1 },
+       displayT = {
+           ["math"]   = { short = "(M)", long = "(math)", color = "blue",    doc = "Math related software", },
+           ["atm"]    = { short = "(A)", long = "(atm)",  color = "cyan",    doc = "Atmospheric science software", },
+           ["gen"]    = { short = "(G)", long = "(gen)",  color = "red",     doc = "Genomic science related", },
+           ["bio"]    = { short = "(B)", long = "(bio)",  color = "green",   doc = "Biology related software", },
+           ["eng"]    = { short = "(E)", long = "(eng)",  color = "yellow",  doc = "Engineering related software", },
+           ["chem"]   = { short = "(C)", long = "(chem)", color = "magenta", doc = "Chemistry related software", },
+           ["phys"]   = { short = "(P)", long = "(phys)", color = "white",   doc = "Physics related software", },
+           ["geo"]    = { short = "(G)", long = "(geo)",  color = "yellow",  doc = "Geology / Geophysics related software", },
+       },
+   },
 }
