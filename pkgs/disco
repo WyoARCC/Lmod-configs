@@ -1,0 +1,28 @@
+-- Modulefile for Disco
+local display_name = "Disco"
+local description = ""
+local keywords = ""
+local category = ""
+local url = "https://github.com/abiswas-odu/Disco"
+local help = [[
+
+DISCO, Distributed Co-assembly of Overlap graphs, is a multi threaded and 
+multiprocess distributed memory overlap-layout-consensus (OLC) metagenome 
+assembler - DISCO. The detailed user manual of the assembler and how to use 
+it to acheive best results is provided here: 
+
+	http://disco.omicsbio.org/user-manual. 
+
+             ]]
+
+
+local pkg = pkg_init{display_name = display_name,
+                     description  = description,
+                     keywords     = keywords,
+                     category     = category,
+                     url          = url,
+                     help         = help,
+                     compilers    = compT,
+                    }
+
+-- Specials Below Here --
